@@ -1,0 +1,15 @@
+<footer class="site-footer">
+  <div class="container">
+    <ul>
+      <li><a href="https://discourse.julialang.org/c/internals/compiler/24">Discourse</a></li>
+      <li><a href="https://julialang.org/slack/">Slack</a></li>
+      <li><a href="https://github.com/JuliaLang/JuliaC.jl">JuliaC.jl</a></li>
+      <li><a href="https://github.com/JuliaLang/PackageCompiler.jl">PackageCompiler.jl</a></li>
+      <li><a href="https://github.com/JuliaInterop/JuliaLibWrapping.jl">JuliaLibWrapping.jl</a></li>
+      {{- with site.GetPage "/post" }}{{ with .OutputFormats.Get "rss" }}
+      <li><a href="{{ .RelPermalink }}">RSS</a></li>
+      {{- end }}{{ end }}
+    </ul>
+    <p>Prototype inspired by <a href="https://juliagpu.org/">JuliaGPU</a> · Built with <a href="https://gohugo.io/">Hugo</a> · <a href="{{ site.Params.repository }}">Source on GitHub</a>.</p>
+  </div>
+</footer>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 62" fill="none">
+  <style>
+    .frame { stroke: #1c2028; }
+    .edge { stroke: #596170; }
+    @media (prefers-color-scheme: dark) {
+      .frame { stroke: #e2e5ea; }
+      .edge { stroke: #9aa3b1; }
+    }
+  </style>
+  <!-- Outer compiler binary/IR frame -->
+  <rect class="frame" x="4" y="6" width="80" height="50" rx="10" stroke-width="4"/>
+  <!-- Pipeline arrows connecting IR nodes to native output -->
+  <path class="edge" d="M25 22 L44 31 L25 40" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="edge" d="M44 31 L63 31" stroke-width="3" stroke-linecap="round"/>
+  <path class="frame" d="M58 24 L66 31 L58 38" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Julia three-dot compiler graph nodes -->
+  <circle cx="24" cy="21" r="6.2" fill="#389826"/>
+  <circle cx="24" cy="41" r="6.2" fill="#cb3c33"/>
+  <circle cx="43" cy="31" r="6.2" fill="#9558b2"/>
+</svg>

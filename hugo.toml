@@ -1,0 +1,77 @@
+baseURL = "https://yolhan83.github.io/Proto_JuliacCompilers/"
+locale = "en-US"
+title = "JuliaCompilers"
+disableKinds = ["taxonomy", "term"]
+enableRobotsTXT = true
+
+[params]
+description = "From interactive LLVM JIT to trimmed native binaries, shared libraries, WebAssembly, MLIR/XLA, and automatic foreign-language bindings."
+repository = "https://github.com/yolhan83/Proto_JuliacCompilers"
+# The compilation workflows that examples can be shown for, see the workflows shortcode
+workflows = [
+  "REPL / JIT",
+  "JuliaC.jl",
+  "PackageCompiler.jl",
+  "StaticCompiler.jl",
+  "JuliaLibWrapping.jl",
+  "WebAssembly",
+  "Reactant.jl"
+]
+
+[frontmatter]
+# posts are named YYYY-MM-DD-name.md, or YYYY-MM-DD-name/index.md for a bundle
+date = [":filename", ":default"]
+
+[permalinks.page]
+post = "/post/:contentbasename/"
+
+[outputs]
+home = ["html"]
+section = ["html"]
+
+[markup.highlight]
+noClasses = false
+
+[markup.goldmark.parser]
+wrapStandAloneImageWithinParagraph = false
+
+[privacy.youTube]
+privacyEnhanced = true
+
+[[menus.main]]
+name = "Compilers"
+pageRef = "/compilers"
+weight = 1
+
+[[menus.main]]
+name = "Bindings & Add-ons"
+pageRef = "/bindings"
+weight = 2
+
+[[menus.main]]
+name = "Get started"
+pageRef = "/get-started"
+weight = 3
+
+[[menus.main]]
+name = "Compare"
+pageRef = "/compare"
+weight = 4
+
+[[menus.main]]
+name = "Ecosystem"
+pageRef = "/ecosystem"
+weight = 5
+
+[[menus.main]]
+name = "Showcases"
+pageRef = "/showcases"
+weight = 6
+
+[[menus.main]]
+name = "Blog"
+pageRef = "/post"
+weight = 7
+
+[module.hugoVersion]
+min = "0.158.0"

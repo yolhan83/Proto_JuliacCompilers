@@ -1,0 +1,2 @@
+{{- /* The id of the picker input for a workflow name: "REPL / JIT" -> "workflow-repl-jit". */ -}}
+{{- return print "workflow-" (. | strings.TrimSuffix ".jl" | lower | replaceRE `[^a-z0-9]+` "-" | replaceRE `^-+|-+$` "") -}}

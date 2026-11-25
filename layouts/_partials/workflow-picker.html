@@ -1,0 +1,24 @@
+{{- /*
+  Page-wide choice of compilation workflow: one radio button per workflow in
+  `params.workflows`. The tabs of every `workflow-tabs` group on the page are
+  labels for these inputs, so picking a workflow in one group switches all of
+  them. A group without an example for the picked workflow shows its first one.
+*/ -}}
+<div class="workflow-picker" role="radiogroup" aria-label="Compilation workflow">
+  {{- range site.Params.workflows }}
+  {{- $id := partial "workflow-id.html" . }}
+  <input type="radio" name="workflow" id="{{ $id }}" aria-label="{{ . }}">
+  {{- end }}
+</div>
+<style>
+  {{- range site.Params.workflows }}
+  {{- $id := partial "workflow-id.html" . }}
+  {{- $picked := printf "body:has(#%s:checked)" $id | safeCSS }}
+  {{- $missing := printf `%s .workflows:not(:has(.workflow-panel[data-workflow="%s"]))` $picked $id | safeCSS }}
+  {{ $picked }} .workflow-panel[data-workflow="{{ $id }}"],
+  {{ $missing }} .workflow-panel:first-child { visibility: visible }
+  {{ $picked }} .workflow-tabs label[for="{{ $id }}"],
+  {{ $missing }} .workflow-tabs label:first-child { color: var(--fg); --underline: visible }
+  body:has(#{{ $id }}:focus-visible) .workflow-tabs label[for="{{ $id }}"] { outline: 2px solid var(--accent); outline-offset: -2px }
+  {{- end }}
+</style>

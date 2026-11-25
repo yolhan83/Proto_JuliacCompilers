@@ -1,0 +1,22 @@
+<article class="card">
+  <div class="card-head">
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    {{- with .Params.badge }}
+    <span class="card-tag{{ if $.Params.badgeNew }} new{{ end }}">{{ . }}</span>
+    {{- end }}
+  </div>
+  <p>{{ .Description }}</p>
+  {{- with .Params.packages }}
+  <ul class="card-packages">
+    {{- range . }}
+    <li>
+      <code>{{ .name }}</code>
+      {{- with .documentation }}
+      <a href="{{ . }}">Docs</a>
+      {{- end }}
+      <a href="{{ .repository }}" aria-label="{{ .name }} on GitHub">{{ partial "icon.html" "github" }}</a>
+    </li>
+    {{- end }}
+  </ul>
+  {{- end }}
+</article>

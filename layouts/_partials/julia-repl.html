@@ -1,0 +1,48 @@
+{{- /*
+  Highlights a Julia REPL / CLI session: input after a `julia>` prompt (plus
+  its continuation lines, indented to the prompt's width) as Julia; `pkg>`,
+  `shell>`, `$ `, and `>>> ` prompts are styled cleanly alongside outputs.
+*/ -}}
+{{- $indent := "       " }}
+{{- $lines := slice }}
+{{- $prompt := "" }}
+{{- $input := slice }}
+{{- range split (strings.TrimRight "\n" .) "\n" }}
+  {{- if and $input (hasPrefix . $indent) }}
+    {{- $input = $input | append (strings.TrimPrefix $indent .) }}
+    {{- continue }}
+  {{- end }}
+  {{- with $input }}
+    {{- $lines = $lines | append (partial "inline/input.html" (dict "prompt" $prompt "input" . "indent" $indent)) }}
+    {{- $input = slice }}
+  {{- end }}
+  {{- with findRESubmatch `^((?:julia|pkg|shell|help\?)> ?|\([^)]*\) pkg> ?|\$ |>>> )(.*)$` . 1 }}
+    {{- $match := index . 0 }}
+    {{- $p := index $match 1 }}
+    {{- $rest := index $match 2 }}
+    {{- if hasPrefix $p "julia>" }}
+      {{- $prompt = printf `<span class="gp">%s</span>` (htmlEscape $p) }}
+      {{- $input = slice $rest }}
+    {{- else if or (hasPrefix $p "pkg>") (strings.Contains $p ") pkg>") }}
+      {{- $lines = $lines | append (printf `<span class="gp-pkg">%s</span>%s` (htmlEscape $p) (htmlEscape $rest)) }}
+    {{- else if or (hasPrefix $p "shell>") (hasPrefix $p "$ ") }}
+      {{- $code := transform.Highlight $rest "bash" "hl_inline=true" }}
+      {{- $lines = $lines | append (printf `<span class="gp-shell">%s</span>%s` (htmlEscape $p) $code) }}
+    {{- else if hasPrefix $p ">>> " }}
+      {{- $code := transform.Highlight $rest "python" "hl_inline=true" }}
+      {{- $lines = $lines | append (printf `<span class="gp-pkg">%s</span>%s` (htmlEscape $p) $code) }}
+    {{- else }}
+      {{- $lines = $lines | append (printf `<span class="gp">%s</span>%s` (htmlEscape $p) (htmlEscape $rest)) }}
+    {{- end }}
+  {{- else }}
+    {{- $lines = $lines | append (printf `<span class="go">%s</span>` (htmlEscape .)) }}
+  {{- end }}
+{{- end }}
+{{- with $input }}
+  {{- $lines = $lines | append (partial "inline/input.html" (dict "prompt" $prompt "input" . "indent" $indent)) }}
+{{- end -}}
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-julia-repl" data-lang="julia-repl">{{ delimit $lines "\n" | safeHTML }}</code></pre></div>
+{{- define "_partials/inline/input.html" }}
+  {{- $code := transform.Highlight (delimit .input "\n") "julia" "hl_inline=true" }}
+  {{- return print .prompt (replace $code "\n" (print "\n" .indent)) }}
+{{- end }}

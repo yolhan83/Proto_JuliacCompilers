@@ -1,0 +1,6 @@
+{{- $_ := .Inner }}
+{{- with .Store.Get "variants" }}
+  {{- partial "workflow-tabs.html" (dict "variants" .) }}
+{{- else }}
+  {{- errorf "%s: workflows shortcode without any workflow in it" $.Position }}
+{{- end }}

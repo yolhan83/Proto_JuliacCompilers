@@ -1,0 +1,4 @@
+{{- $v := .Get 0 }}
+{{- $class := cond (hasPrefix $v "+") "better" (cond (hasPrefix $v "-") "worse" "same") }}
+<span class="delta {{ $class }}">{{ $v }}</span>
+{{- /**/ -}}

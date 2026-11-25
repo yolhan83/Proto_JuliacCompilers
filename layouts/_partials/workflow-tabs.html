@@ -1,0 +1,41 @@
+{{- /*
+  A group of examples, one per compilation workflow, with a tab for each.
+  Which one is shown is decided page-wide by the radio buttons of the
+  workflow-picker partial; until the visitor picks one, the group shows its
+  first example (or rotates through them when `rotate` is non-zero).
+*/ -}}
+{{- $variants := .variants }}
+{{- $n := len $variants }}
+{{- $rotate := .rotate | default 0 }}
+{{- range $variants }}
+  {{- if not (in site.Params.workflows .name) }}
+    {{- errorf "unknown workflow %q; add it to params.workflows in hugo.toml" .name }}
+  {{- end }}
+{{- end }}
+{{- if $rotate }}
+{{- $slot := printf "%.4f" (div 100.0 $n) }}
+<style>
+  @keyframes workflow-panel-{{ $n }} { 0% { visibility: visible } {{ $slot }}%, 100% { visibility: hidden } }
+  @keyframes workflow-tab-{{ $n }} { 0% { color: var(--fg) } {{ $slot }}%, 100% { color: var(--fg-muted) } }
+  @keyframes workflow-progress-{{ $n }} {
+    0% { visibility: visible; transform: scaleX(0) }
+    {{ $slot }}%, 100% { visibility: hidden; transform: scaleX(1) }
+  }
+  {{- $group := printf `body:not(:has(.workflow-picker :checked)) .workflows[data-rotate="%d"]` $n | safeCSS }}
+  {{ $group }} .workflow-panel { animation: workflow-panel-{{ $n }} var(--cycle) step-end var(--delay) infinite }
+  {{ $group }} .workflow-tabs label { animation: workflow-tab-{{ $n }} var(--cycle) step-end var(--delay) infinite }
+  {{ $group }} .workflow-tabs label::after { animation: workflow-progress-{{ $n }} var(--cycle) linear var(--delay) infinite }
+</style>
+{{- end }}
+<div class="workflows"{{ with $rotate }} data-rotate="{{ $n }}" style="--cycle: {{ mul $n . }}s"{{ end }}>
+  <div class="workflow-tabs">
+    {{- range $i, $v := $variants }}
+    <label for="{{ partial "workflow-id.html" $v.name }}"{{ with $rotate }} style="--delay: {{ mul (sub $i $n) . }}s"{{ end }}>{{ $v.name }}</label>
+    {{- end }}
+  </div>
+  <div class="workflow-panels">
+    {{- range $i, $v := $variants }}
+    <div class="workflow-panel" data-workflow="{{ partial "workflow-id.html" $v.name }}"{{ with $rotate }} style="--delay: {{ mul (sub $i $n) . }}s"{{ end }}>{{ $v.html }}</div>
+    {{- end }}
+  </div>
+</div>

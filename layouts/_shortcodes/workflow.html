@@ -1,0 +1,5 @@
+{{- with .Parent }}
+  {{- .Store.Add "variants" (slice (dict "name" ($.Get 0) "html" ($.Inner | $.Page.RenderString (dict "display" "block")))) }}
+{{- else }}
+  {{- errorf "%s: workflow shortcode outside of a workflows group" .Position }}
+{{- end }}
